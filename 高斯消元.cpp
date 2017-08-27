@@ -9,7 +9,7 @@ bool gauss() {
 		for (int j=i+1;j<n;j++) if (fabs(a[j][i]) > fabs(a[k][i])) k = j;
 		double now = a[k][i];
 		if (fabs(now) < eps) return false;
-		for (int j=0;j<=n;j++) swap(a[i][j],a[k][j]);
+		for (int j=i;j<=n;j++) swap(a[i][j],a[k][j]);
 		for (int j=i;j<=n;j++) a[i][j] /= now;
 		for (int k=0;k<n;k++) if (k != i) {
 			now = a[k][i];
