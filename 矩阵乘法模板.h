@@ -11,7 +11,7 @@ struct Matrix {
 	}
 	Matrix operator * (const Matrix &b) {
 		//https://zh.wikipedia.org/wiki/%E7%9F%A9%E9%99%A3%E4%B9%98%E6%B3%95
-		//当调用c = a * b时，c就是返回结果，直接访问num就是a.num，b就是b
+		//当调用c = a * b时，c就是返回结果，其自身是a，b就是b
 		//注意，不能用*= 
 		//需要确保a.w == b.h 
 		Matrix tmp(h,w);
