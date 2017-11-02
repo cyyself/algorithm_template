@@ -1,4 +1,4 @@
-//TLE:https://www.luogu.org/problemnew/show/P3379
+//AC 1140ms:https://www.luogu.org/problemnew/show/P3379
 #include <bits/stdc++.h>
 int n,m,s;
 int f[500005];
@@ -7,12 +7,12 @@ int qhead[500005];
 struct Edge {
 	int v;
 	int next;
-}e[500005];
+}e[1000005];
 int ecnt = 0;
 struct Query {
 	int v;
 	int next;
-}q[500005];
+}q[1000005];
 int qcnt = 0;
 inline void AddEdge(int u,int v) {
 	e[ecnt].v = v;
