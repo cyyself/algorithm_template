@@ -14,7 +14,7 @@ struct Matrix {
 		//当调用c = a * b时，c就是返回结果，其自身是a，b就是b
 		//注意，不能用*= 
 		//需要确保a.w == b.h 
-		Matrix tmp(h,w);
+		Matrix tmp(h,b.w);
 		for (int i=0;i<h;i++)
 			for (int j=0;j<b.w;j++) {
 				for (int k=0;k < w;k++) {
