@@ -44,7 +44,7 @@ void tarjan(int node) {
 		}
 	}
 	for (int i=qhead[node];i != -1;i=q[i].next) {
-		if (vis[q[i].v]) ans[i/2] = find(q[i].v);
+		if (vis[q[i].v]) ans[i>>1] = find(q[i].v);
 	}
 }
 int main() {
