@@ -1,4 +1,3 @@
-//Luogu P3808:https://www.luogu.org/problemnew/show/P3808
 #include <bits/stdc++.h>
 using namespace std;
 struct node {
@@ -29,12 +28,13 @@ void build_tree() {
 		int u = q.front();
 		q.pop();
 		for (int i=0;i<26;i++) {
-			if (tr[u].ch[i]) {
-				tr[tr[u].ch[i]].next = tr[tr[u].next].ch[i];
-				q.push(tr[u].ch[i]);
+			int &v = tr[u].ch[i];
+			if (v) {
+				tr[v].next = tr[tr[u].next].ch[i];
+				q.push(v);
 			}
 			else {
-				tr[u].ch[i] = tr[tr[u].next].ch[i];
+				v = tr[tr[u].next].ch[i];
 			}
 		}
 	}
