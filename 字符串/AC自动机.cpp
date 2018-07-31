@@ -3,7 +3,7 @@
 using namespace std;
 struct node {
 	int cnt;
-	int next;
+	int next;//匹配不上时走的节点
 	int ch[26];
 }tr[1000005];
 int ncnt = 0;
