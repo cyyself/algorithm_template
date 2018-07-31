@@ -18,7 +18,7 @@ void insert(char *s) {
 	tr[cur].cnt ++;
 }
 void build_tree() {
-	queue <int> q;
+	queue <int> q;//一定要广搜
 	for (int i=0;i<26;i++) {
 		if (tr[0].ch[i]) {
 			tr[tr[0].ch[i]].next = 0;
