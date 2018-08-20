@@ -1,6 +1,5 @@
 //UVa 247:https://vjudge.net/problem/UVA-247
-
-##includeinclude  <bits/stdc++.h><bits/stdc+ 
+#include <bits/stdc++.h>
 using namespace std;
 map <string,int> name;
 map <int,string> name2;
