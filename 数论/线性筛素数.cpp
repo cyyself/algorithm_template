@@ -1,19 +1,25 @@
-#include <cstdio>
-#include <cstring>
-bool zhishu[10000005] = {0};
+//https://www.luogu.org/problemnew/show/P3383
+#include <bits/stdc++.h>
+using namespace std;
+bool judge[10000005];
+vector <int> prime;
 int main() {
-	int N,M;
-	scanf("%d%d",&N,&M);
-	memset(zhishu,true,sizeof(zhishu));
-	zhishu[1] = false;
-    for (int i=2;i<N;i++) 
-		if (zhishu[i]) //对于一个质数，它的倍数就不是质数
-		for (int j=2*i;j<=N;j+=i) zhishu[j] = false;
-	for (int i=0;i<M;i++) {
+	int n,m;
+	scanf("%d%d",&n,&m);
+	judge[1] = true;
+	for (int i=2;i<=n;i++) {
+		if (!judge[i]) prime.push_back(i);
+		for (auto p:prime) {
+			if (i * p > n) break;
+			judge[i*p] = true;
+			if (i % p == 0) break;
+		}
+	}
+	while (m --) {
 		int num;
 		scanf("%d",&num);
-		if (zhishu[num]) printf("Yes\n");
-		else printf("No\n");
+		if (judge[num]) printf("No\n");
+		else printf("Yes\n");
 	}
 	return 0;
 }
