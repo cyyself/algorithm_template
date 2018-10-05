@@ -3,17 +3,16 @@
 int f[100005];
 int r[100005];
 int find(int x) {
-	if (x == f[x]) return x;
+	if (f[x] == x) return x;
 	int t = find(f[x]);
-	r[x] = (r[x]+r[f[x]]) % 2;
+	r[x] = (r[x] + r[f[x]]) % 2;
 	return f[x] = t;
 }
 void uni(int x,int y) {
-	int root_x = find(x);
-	int root_y = find(y);
-	f[root_x] = root_y;
-	if (r[y] == 1) r[root_x] = r[x];
-	else           r[root_x] = r[x] ^ 1;
+	int xr = find(x);
+	int yr = find(y);
+	f[xr] = yr;
+	r[xr] = (r[x] + r[y] + 1) % 2;
 }
 int n,m;
 void init() {
@@ -28,9 +27,9 @@ int main() {
 	while (T --) {
 		scanf("%d%d",&n,&m);
 		init();
+		char o;
+		int x,y;
 		while (m --) {
-			char o;
-			int x,y;
 			scanf(" %c%d%d",&o,&x,&y);
 			if (o == 'A') {
 				if (find(x) == find(y)) {
