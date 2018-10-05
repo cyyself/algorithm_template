@@ -5,7 +5,7 @@ int r[100005];
 int find(int x) {
 	if (x == f[x]) return x;
 	int t = find(f[x]);
-	r[x] ^= r[f[x]];
+	r[x] = (r[x]+r[f[x]]) % 2;
 	return f[x] = t;
 }
 void uni(int x,int y) {
@@ -13,7 +13,7 @@ void uni(int x,int y) {
 	int root_y = find(y);
 	f[root_x] = root_y;
 	if (r[y] == 1) r[root_x] = r[x];
-	else r[root_x] = 1 - r[x];
+	else           r[root_x] = r[x] ^ 1;
 }
 int n,m;
 void init() {
