@@ -53,14 +53,14 @@ int query(int u,int v) {
 			diff -= two;
 		}
 	}
+	if (u == v) return u;
 	for (int i=log(dep[u])/log(2);i>=0;i--) {
 		if (up[u][i] != up[v][i]) {
 			u = up[u][i];
 			v = up[v][i];
 		}
 	}
-	if (u == v) return u;
-	else return up[u][0];
+	return up[u][0];
 }
 int main() {
 	memset(head,-1,sizeof(head));
