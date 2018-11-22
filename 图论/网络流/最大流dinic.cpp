@@ -2,8 +2,8 @@
 #include <cstdio>
 #include <cstring>
 #include <queue>
-#define INF 0x7f7f7f7f
 using namespace std;
+const int INF = 0x3f3f3f3f;
 struct Edge{
 	int f,v,next;
 }e[200005];
@@ -20,17 +20,18 @@ int n,m,s,t;
 int dis[10005];
 
 bool bfs() {//划分层次，同时判断是否可到达
-	memset(dis,0x7f,sizeof(dis));
+	memset(dis,0x3f,sizeof(dis));
 	dis[s] = 1;
 	queue <int> q;
 	q.push(s);
 	while(!q.empty()) {
-		int cur = q.front();
+		int u = q.front();
 		q.pop();
-		for (int en=head[cur];en!=-1;en = e[en].next) {
-			int v = e[en].v;
-			if (e[en].f != 0 && dis[v] == INF) {
-				dis[v] = dis[cur] + 1;
+		if (u == t) return 1;
+		for (int i=head[u];i!=-1;i = e[i].next) {
+			int v = e[i].v;
+			if (e[i].f != 0 && dis[v] == INF) {
+				dis[v] = dis[u] + 1;
 				q.push(v);
 			}
 		}
@@ -39,25 +40,32 @@ bool bfs() {//划分层次，同时判断是否可到达
 }
 
 int dfs(int u,int curflow) {//curflow=>当前可增广的最大流量
-	if (u == t) return curflow;
+	if (curflow == 0 || u == t) return curflow;
 	if (dis[u] >= dis[t]) return 0;
-	for (int en=head[u];en!=-1;en=e[en].next) {
-		int v = e[en].v;
-		int flow;
-		if (e[en].f != 0 && dis[v] == dis[u] + 1 && (flow = dfs(v,min(curflow,e[en].f)))) {
-			e[en].f -= flow;
-			e[en ^ 1].f += flow;//偶数+1,奇数-1，很巧妙的位运算
-			return flow;
+	int ret = 0;
+	for (int i=head[u];i!=-1 && ret < curflow;i=e[i].next) {
+		int v = e[i].v;
+		int f = e[i].f;
+		if (dis[v] == dis[u] + 1 && f != 0) {
+			int pushflow = min(curflow-ret,f);
+			int chflow = dfs(v,pushflow);
+			if (chflow > 0) {
+				e[ i ].f -= chflow;//偶数+1,奇数-1，很巧妙的位运算
+				e[i^1].f += chflow;
+				ret += chflow;
+			}
+			else dis[v] = -1;
 		}
 	}
-	return 0;
+	if (ret == 0) dis[u] = -1;
+	return ret;
 }
 int dinic() {
 	int ans = 0;
-	int flow;
-	while(bfs()) while(flow = dfs(s,INF)) ans += flow;
+	while(bfs()) ans += dfs(s,INF);
 	return ans;
 }
+
 int main() {
 	scanf("%d%d%d%d",&n,&m,&s,&t);
 	memset(head,-1,sizeof(head));
