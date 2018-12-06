@@ -11,7 +11,7 @@ int main() {
             if (phi[j] == 0) phi[j] = j;
             phi[j] = phi[j] / i * (i - 1);
         }
-    }//CYY也不知道怎么证明，闷声背代码吧
+    }
     cout << phi[n] << endl;
     return 0;
 }

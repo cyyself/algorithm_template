@@ -1,4 +1,4 @@
-//https://www.luogu.org/problemnew/show/P2014
+//Luogu P2014：给出每个物品的价值和所属关系（如果父节点为0则没有所属关系，若不为0则存在父节点），求选M个物品能获得的最大权值
 #include <bits/stdc++.h>
 using namespace std;
 int f[305][305];

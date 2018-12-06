@@ -1,19 +1,16 @@
 //匈牙利算法，寻找增广路
-#include <cstdio>
-#include <cstring>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 int n,m;
 vector <int> g[1005];
 bool vis[1005];
 int pre[1005];
-bool zg(int p) {
-	for(vector<int>::iterator iter=g[p].begin();iter!=g[p].end();iter++) {
-		int i = *iter;
-		if (!vis[i]) {
-			vis[i] = true;
-			if (pre[i] == 0 || zg(pre[i])) {
-				pre[i] = p;
+bool zg(int u) {
+	for(auto v:g[u]) {
+		if (!vis[v]) {
+			vis[v] = true;
+			if (pre[v] == 0 || zg(pre[v])) {
+				pre[v] = u;
 				return true;
 			}
 		}

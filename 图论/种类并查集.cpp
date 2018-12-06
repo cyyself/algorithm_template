@@ -1,4 +1,5 @@
 //http://poj.org/problem?id=1703
+//有N个罪犯，D a,b表示两个罪犯不属于一个帮派，A a,b表示询问a,b的关系
 #include <cstdio>
 int f[100005];
 int r[100005];
