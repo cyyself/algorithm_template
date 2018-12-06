@@ -1,68 +1,72 @@
-#include <cstdio>
-long long N,M;
-struct node {
-	node *l;
-	node *r;
-	long long lv;
-	long long rv;
+#include <bits/stdc++.h>
+using namespace std;
+
+#define node ((l+r)|(l!=r))
+#define mid ((l + r) >> 1)
+#define lson ((l+mid)|(l!=mid))
+#define rson ((mid+1+r)|(mid+1!=r))
+
+struct tree {
 	long long sum;
-	long long lan;//懒人标记，其下子节点加上的数
-	node():l(NULL),r(NULL),lv(0),rv(0),sum(0),lan(0){}
-}root;
-void build_tree(node *n,long long l,long long r) {
-	n->lv = l;
-	n->rv = r;
-	if (l == r) return;
-	long long mid = (l + r) >> 1;
-	n->l = new node;
-	build_tree(n->l,l,mid);
-	n->r = new node;
-	build_tree(n->r,mid+1,r);
-}
-void update(node *n,long long l,long long r,long long v) {
-	n->sum += v * (r-l+1);
-	if (n->lv == n->rv) return;
-	if (l == n->lv && r == n->rv) n->lan += v;
+	long long lazy;
+}tr[200005];
+long long a[100005];
+void init(int l,int r) {
+	if (l == r) {
+		tr[node].sum = a[l];
+		tr[node].lazy = 0;
+	}
 	else {
-		long long mid = (n->lv + n->rv) >> 1;
-		if (r < mid + 1) update(n->l,l,r,v);
-		else if (l > mid) update(n->r,l,r,v);
-		else {
-			update(n->l,l,mid,v);
-			update(n->r,mid+1,r,v);
-		}
+		init(l,mid);
+		init(mid+1,r);
+		tr[node].sum = tr[lson].sum + tr[rson].sum;
+		tr[node].lazy = 0;
 	}
 }
-long long query(node *n,long long l,long long r) {
-	if (n->lv == l && n->rv == r) return n->sum;
+void update(int l,int r,int rangeL,int rangeR,long long d) {
+	//l和r是树的节点
+	//rangeL和rangeR是要更新的范围
+	tr[node].sum += (rangeR - rangeL + 1LL) * d;
+	if (l == rangeL && r == rangeR) {
+		tr[node].lazy += d;
+	}
 	else {
-		long long mid = (n->lv + n->rv) >> 1;
-		if (r < mid + 1) return n->lan * (r-l+1) + query(n->l,l,r);
-		else if (l > mid) return n->lan * (r-l+1) + query(n->r,l,r);
-		else return n->lan * (r-l+1) + query(n->l,l,mid) + query(n->r,mid+1,r);
-		
+		if (rangeL <= mid) update(l,mid,rangeL,min(rangeR,mid),d);
+		if (rangeR > mid) update(mid+1,r,max(rangeL,mid+1),rangeR,d);
 	}
 }
-//注意：一般线段树会有pushUp和pushDown，在插入时对打过懒人标记的点开始向下DFS把懒人标记处理上去，但是这里cyy没有使用这样的方法，因为这里只需要加法不需要乘法
+void push_down(int l,int r) {
+	if (l != r) {
+		tr[lson].lazy += tr[node].lazy;
+		tr[rson].lazy += tr[node].lazy;
+		tr[lson].sum += (mid-l+1LL) * tr[node].lazy;
+		tr[rson].sum += (r-(mid+1)+1LL) * tr[node].lazy;
+	}
+	tr[node].lazy = 0;
+}
+long long query(int l,int r,int rangeL,int rangeR) {
+	if (tr[node].lazy) push_down(l,r);
+	if (l == rangeL && r == rangeR) return tr[node].sum;
+	long long ret = 0;
+	if (rangeL <= mid) ret += query(l,mid,rangeL,min(rangeR,mid));
+	if (rangeR  > mid) ret += query(mid+1,r,max(rangeL,mid+1),rangeR);
+	return ret;
+}
 int main() {
-	int N,M;
-	scanf("%d%d",&N,&M);
-	build_tree(&root,1,N);
-	for (int i=1;i<=N;i++) {
-		long long x;
-		scanf("%lld",&x);
-		update(&root,i,i,x);
-	}
-	while (M--) {
+	int n,m;
+	scanf("%d%d",&n,&m);
+	for (int i=1;i<=n;i++) scanf("%lld",&a[i]);
+	init(1,n);
+	for (int i=0;i<m;i++) {
 		int o,x,y;
 		scanf("%d%d%d",&o,&x,&y);
 		if (o == 1) {
 			long long k;
 			scanf("%lld",&k);
-			update(&root,x,y,k);
+			update(1,n,x,y,k);
 		}
 		else {
-			printf("%lld\n",query(&root,x,y));
+			printf("%lld\n",query(1,n,x,y));
 		}
 	}
 	return 0;
