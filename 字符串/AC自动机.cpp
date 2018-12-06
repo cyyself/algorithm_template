@@ -1,3 +1,4 @@
+//给定n个模式串和1个文本串，求有多少个模式串在文本串里出现过。
 #include <bits/stdc++.h>
 using namespace std;
 struct node {

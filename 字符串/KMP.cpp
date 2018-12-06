@@ -1,4 +1,4 @@
-//Luogu P3375
+//Luogu P3375：给出两个字符串T和P，其中P为T的子串，求出P在T中所有出现的位置。
 #include <bits/stdc++.h>
 char T[1000005];
 char P[1000005];

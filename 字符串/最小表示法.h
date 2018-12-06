@@ -1,4 +1,4 @@
-int strmin(char *s) {//返回最小循环子串的开始位置
+int strmin(char *s) {//给一个字符串s，返回字典序最小循环子串的开始位置
 	int i=0,j=1,k=0;
 	int len = strlen(s);
 	while (i < len && j < len && k < len) {

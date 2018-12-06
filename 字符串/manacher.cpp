@@ -1,3 +1,4 @@
+//给一个字符串s，求最长回文串的长度
 #include <bits/stdc++.h>
 using namespace std;
 char a[11000005];
