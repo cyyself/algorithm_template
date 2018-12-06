@@ -1,4 +1,7 @@
 //洛谷P1495 曹冲养猪
+/*
+ans%a=b
+*/
 #include <cstdio>
 long long exgcd(long long a,long long b,long long &x,long long &y) {
 	if (b == 0) {
