@@ -1,11 +1,13 @@
 namespace cyy {
-	void gets(char *s) {
+	bool gets(char *s) {
 		char c = getchar();
-		while (c != '\n') {
+		if (c == EOF) return false;
+		while (c != '\n' && c != EOF) {
 			*s = c;
 			s ++;
 			c = getchar();
 		}
 		*s = '\0';
+		return true;
 	}
 }
