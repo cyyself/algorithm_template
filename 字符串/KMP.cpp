@@ -5,31 +5,31 @@ char P[1000005];
 int jump[1000005];
 int n,m;
 void getnext() {
-	jump[1] = 0;
-	int k = 0;
-	for (int i=2;i<=m;i++) {
-		while (k != 0 && P[i] != P[k+1]) k = jump[k];
+	jump[0] = -1;
+	int k = -1;
+	for (int i=1;i<m;i++) {
+		while (k != -1 && P[i] != P[k+1]) k = jump[k];
 		if (P[i] == P[k+1]) k ++;
 		jump[i] = k;
 	}
 }
 int main() {
-	scanf("%s",T+1);
-	scanf("%s",P+1);
-	n = strlen(T+1);
-	m = strlen(P+1);
+	scanf("%s",T);
+	scanf("%s",P);
+	n = strlen(T);
+	m = strlen(P);
 	getnext();
-	int k = 0;
-	for (int i=1;i<=n;i++) {
-		while (k != 0 && T[i] != P[k+1]) k = jump[k];
+	int k = -1;
+	for (int i=0;i<n;i++) {
+		while (k != -1 && T[i] != P[k+1]) k = jump[k];
 		if (T[i] == P[k+1]) k++;
-		if (k == m) {
-			printf("%d\n",i-m+1);
+		if (k == m - 1) {
+			printf("%d\n",i-m+2);
 		}
 	}
-	for (int i=1;i<=m;i++) {
-		if (i != 1) printf(" ");
-		printf("%d",jump[i]);
+	for (int i=0;i<m;i++) {
+		if (i != 0) printf(" ");
+		printf("%d",jump[i]+1);
 	}
 	printf("\n");
 	return 0;
