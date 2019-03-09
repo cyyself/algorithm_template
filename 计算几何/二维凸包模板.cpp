@@ -52,7 +52,7 @@ void gerham() {
 		}
 		int len = s.size();
 		//这里cyy的写法和许多人不一样，请注意
-        //大多数人是用topindex作为len，后面用topindex加以判断
+		//大多数人是用topindex作为len，后面用topindex加以判断
 		s.push(p[n-2]);
 		for (int i=n-3;i>=0;i--) {
 			while (s.size() > len && judge(p[i],s.top(),s.sec())) s.pop();
