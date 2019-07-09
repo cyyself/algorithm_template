@@ -41,7 +41,7 @@ struct stack {//不用STL的原因是STL不能输出栈的次顶元素
 inline bool judge(const pos &e,const pos &c,const pos &s) {
 	return (e.x - s.x) * (c.y - s.y) - (c.x - s.x) * (e.y - s.y) >= 0;
 }
-void gerham() {
+void graham() {
 	sort(p,p+n);
 	s.init();
 	for (int i=0;i<min(2,n);i++) s.push(p[i]);
@@ -68,7 +68,7 @@ int main() {
 	while (scanf("%d",&n) == 1) {
 		if (n == 0) break;
 		for (int i=0;i<n;i++) scanf("%d%d",&p[i].x,&p[i].y);
-		gerham();
+		graham();
 		double ans = 0;
 		if (s.size() > 2) {
 			if (s.size() > 3) 
