@@ -37,6 +37,27 @@ struct LB {
 	void merge(const LB &b) {
 		for (int i=0;i<=62;i++) insert(b.r[i]);
 	}
+	static LB intersect(const LB &a,const LB &b) {
+		LB all,d,ret;
+		for (int i=63;i>=0;i--) {
+			all.r[i] = a.r[i];
+			d.r[i] = 1 << i;
+		}
+		for (int i=63;i>=0;i--) if (b.r[i]) {
+			long long v = b.r[i],k = 0;
+			bool flag = true;
+			for (int j=63;j>=0;j--) if ((v >> j) & 1) {
+				if (all.r[j]) { v ^= all.r[j]; k ^= d.r[j];}
+				else { flag = false; all.r[j] = v; d.r[j] = k; break; }
+			}
+			if (flag) {
+				long long tmp = 0;
+				for (int j=63;j>=0;j--) if ((k >> j) & 1) tmp ^= a.r[j];
+				ret.insert(tmp);
+			}
+		}
+		return ret;
+	}
 };
 int main() {
 	LB A;
