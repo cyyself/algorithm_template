@@ -1,4 +1,3 @@
-//洛谷P3376
 #include <cstdio>
 #include <cstring>
 #include <queue>
@@ -16,10 +15,8 @@ void AddEdge(int u,int v,int c) {
 	head[u] = ecnt;
 	ecnt ++;
 }
-int n,m,s,t;
 int dis[10005];
-
-bool bfs() {//划分层次，同时判断是否可到达
+bool bfs(int s,int t) {//划分层次，同时判断是否可到达
 	memset(dis,0x3f,sizeof(dis));
 	dis[s] = 1;
 	queue <int> q;
@@ -39,7 +36,7 @@ bool bfs() {//划分层次，同时判断是否可到达
 	return dis[t] != INF;
 }
 
-int dfs(int u,int curflow) {//curflow=>当前可增广的最大流量
+int dfs(int u,int t,int curflow) {//curflow=>当前可增广的最大流量
 	if (curflow == 0 || u == t) return curflow;
 	if (dis[u] >= dis[t]) return 0;
 	int ret = 0;
@@ -48,7 +45,7 @@ int dfs(int u,int curflow) {//curflow=>当前可增广的最大流量
 		int f = e[i].f;
 		if (dis[v] == dis[u] + 1 && f != 0) {
 			int pushflow = min(curflow-ret,f);
-			int chflow = dfs(v,pushflow);
+			int chflow = dfs(v,t,pushflow);
 			if (chflow > 0) {
 				e[ i ].f -= chflow;//偶数+1,奇数-1，很巧妙的位运算
 				e[i^1].f += chflow;
@@ -60,13 +57,14 @@ int dfs(int u,int curflow) {//curflow=>当前可增广的最大流量
 	if (ret == 0) dis[u] = -1;
 	return ret;
 }
-int dinic() {
+int dinic(int s,int t) {
 	int ans = 0;
-	while(bfs()) ans += dfs(s,INF);
+	while(bfs(s,t)) ans += dfs(s,t,INF);
 	return ans;
 }
 
 int main() {
+	int n,m,s,t;
 	scanf("%d%d%d%d",&n,&m,&s,&t);
 	memset(head,-1,sizeof(head));
 	for (int i=0;i<m;i++) {
@@ -76,6 +74,6 @@ int main() {
 		AddEdge(v,u,0);
 		//一个邻接表双向存储
 	}
-	printf("%d\n",dinic());
+	printf("%d\n",dinic(s,t));
 	return 0;
 }
