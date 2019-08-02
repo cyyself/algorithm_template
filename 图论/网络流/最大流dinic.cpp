@@ -1,6 +1,4 @@
-#include <cstdio>
-#include <cstring>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
 const int INF = 0x3f3f3f3f;
 struct Edge{
@@ -8,12 +6,16 @@ struct Edge{
 }e[200005];
 int ecnt = 0;//因为采用了一个邻接表奇偶存两条边的方法，所以必须从偶数开始
 int head[10005];
-void AddEdge(int u,int v,int c) {
+void _AddEdge(int u,int v,int c) {
 	e[ecnt].v = v;
 	e[ecnt].f = c;
 	e[ecnt].next = head[u];
 	head[u] = ecnt;
 	ecnt ++;
+}
+void AddEdge(int u,int v,int c) {
+	_AddEdge(u,v,c);
+	_AddEdge(v,u,0);
 }
 int dis[10005];
 bool bfs(int s,int t) {//划分层次，同时判断是否可到达
@@ -71,7 +73,6 @@ int main() {
 		int u,v,c;
 		scanf("%d%d%d",&u,&v,&c);
 		AddEdge(u,v,c);
-		AddEdge(v,u,0);
 		//一个邻接表双向存储
 	}
 	printf("%d\n",dinic(s,t));
