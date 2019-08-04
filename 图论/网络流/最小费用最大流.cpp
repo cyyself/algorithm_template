@@ -1,20 +1,17 @@
-#include <cstdio>
-#include <cstring>
-#include <queue>
-#define INF 0x7f7f7f7f
+#include <bits/stdc++.h>
 using namespace std;
-
+const int INF = 0x3f3f3f3f;
 struct Edge{
-	int u;//大多数算法在邻接表中并不需要这个，但费用流比较例外
+	int u;
 	int v;
-	int f;//残量 
-	int c;//费用 
+	int f;
+	int c;
 	int next;
 }e[100005];
 int head[5005];
 int pre[5005];
 int n,m,s,t;
-int ecnt = 0;
+int ecnt;
 inline void AddEdge(int _u,int _v,int _f,int _c) {
 	e[ecnt].next = head[_u];
 	head[_u] = ecnt;
@@ -28,13 +25,12 @@ inline void Add(int _u,int _v,int _f,int _c) {
 	AddEdge(_u,_v,_f,_c);
 	AddEdge(_v,_u,0,-_c);
 }
-
 int dis[5005];
 bool inq[5005];
-bool SPFA() {
+bool SPFA(int s,int t) {
 	queue <int> q;
 	q.push(s);
-	memset(dis,0x7f,sizeof(dis));
+	memset(dis,0x3f,sizeof(dis));
 	memset(inq,0,sizeof(inq));
 	memset(pre,-1,sizeof(pre));
 	inq[s] = true;
@@ -45,7 +41,6 @@ bool SPFA() {
 		inq[cur] = false;
 		for (int i = head[cur];i != -1;i = e[i].next) {
 			if (e[i].f > 0 && dis[e[i].v] > dis[cur] + e[i].c) {
-			    //网上很多模板都是写e[i].f相当于e[i].f != 0，如果你真的理解网络流的话你会发现这样虽然也能跑出正确结果但是会增加时间复杂度，一个点要重复入队列两次走同样的路
 				dis[e[i].v] = dis[cur] + e[i].c;
 				pre[e[i].v] = i;
 				if (!inq[e[i].v]) {
@@ -57,19 +52,30 @@ bool SPFA() {
 	}
 	return dis[t] != INF;
 }
-
-void MICMAF(int &flow,int &cost) {
+void MICMAF(int s,int t,int &flow,int &cost) {
 	flow = 0;
 	cost = 0;
-	while (SPFA()) {
+	while (SPFA(s,t)) {
 		int minF = INF;
-		for (int i=pre[t];i != -1;i=pre[e[i].u]) minF = min(minF,e[i].f);
+		for (int i=pre[t];i != -1;i=pre[e[i].u]) {
+			minF = min(minF,e[i].f);
+			if (ans[flow].size() == 0 || e[i].v != ans[flow][ans[flow].size()-1]-1) ans[flow].push_back(e[i].v);
+		}
 		flow += minF;
 		for (int i=pre[t];i != -1;i=pre[e[i].u]) {
 			e[i].f -= minF;
 			e[i^1].f += minF;
 		}
 		cost += dis[t] * minF;
+	}
+}
+vector <int> path[2];
+void dfs(int u,int p) {
+	for (int i=head[u];~i;i=e[i].next) {
+		if ( (i & 1) == 0 && e[i].f == 0) {
+			if (e[i].v == (u ^ 1) ) path[p].push_back(e[i].u/2);
+			dfs(e[i].v,p);
+		}
 	}
 }
 int main() {
