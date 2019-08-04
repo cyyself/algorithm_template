@@ -57,10 +57,7 @@ void MICMAF(int s,int t,int &flow,int &cost) {
 	cost = 0;
 	while (SPFA(s,t)) {
 		int minF = INF;
-		for (int i=pre[t];i != -1;i=pre[e[i].u]) {
-			minF = min(minF,e[i].f);
-			if (ans[flow].size() == 0 || e[i].v != ans[flow][ans[flow].size()-1]-1) ans[flow].push_back(e[i].v);
-		}
+		for (int i=pre[t];i != -1;i=pre[e[i].u]) minF = min(minF,e[i].f);
 		flow += minF;
 		for (int i=pre[t];i != -1;i=pre[e[i].u]) {
 			e[i].f -= minF;
