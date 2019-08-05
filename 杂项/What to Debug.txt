@@ -1,0 +1,13 @@
+/*
+What to Debug
+1. 读题
+2. 编译加上-Wall -Wshadow -Wexrta -fsanitizer=address，看错误信息
+3. 快读
+4. 数组越界
+5. 爆int、爆long long
+6. 数组初始化
+7. 边缘数据
+8. 输出格式
+9. 输入是否需要排序（即便样例排了序
+10. 祝1A
+*/
