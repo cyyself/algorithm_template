@@ -27,7 +27,7 @@ int main() {
 			printf("%lld %lld\n",b/2,b/2);
 		}
 		else if (qpow(d,(p-1)/2) == 1) {
-			long long sqrt_d = qpow(d,(p+1)/4);
+			long long sqrt_d = qpow(d,(p+1)/4);//仅在p%4==3时适用
 			if ( (b ^ sqrt_d) & 1) sqrt_d = (p - sqrt_d) % p;//奇偶性不同的时候，下一步运算会有问题
 			long long x = (b - sqrt_d) / 2;
 			long long y = (b + sqrt_d) / 2;
