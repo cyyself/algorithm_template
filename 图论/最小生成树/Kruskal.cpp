@@ -8,11 +8,11 @@ struct Edge{
 	Edge(){}
 };
 Edge e[200005];
-int family[5005];//¼ÇÂ¼Õâ¸ö½ÚµãµÄ¸ù½Úµã 
+int family[5005];//è®°å½•è¿™ä¸ªèŠ‚ç‚¹çš„æ ¹èŠ‚ç‚¹ 
 int find(int member){
 	if (family[member] == member) return member;
 	else {
-		family[member] = find(family[member]);//¼ÇÒä»¯ 
+		family[member] = find(family[member]);//è®°å¿†åŒ– 
 		return family[member];
 	}
 }
@@ -23,18 +23,18 @@ bool comp(const Edge &a,const Edge &b){
 int main() {
 	int N,M;
 	cin >> N >> M;
-	for (int i=1;i<=N;i++) family[i] = i;//³õÊ¼»¯²¢²é¼¯ 
+	for (int i=1;i<=N;i++) family[i] = i;//åˆå§‹åŒ–å¹¶æŸ¥é›† 
 	for (int i=0;i<M;i++) {
 		int X,Y,Z;
 		cin >> X >> Y >> Z;
 		e[i] = Edge(X,Y,Z);
 	}
 	sort(e,e+M,comp);
-	int k = 0;//¼ÇÂ¼Á¬ÆğÀ´µÄ±ßÊı 
-	int tot = 0;//ÒÑ¾­Á¬ÆğÀ´µÄ±ßÈ¨ 
+	int k = 0;//è®°å½•è¿èµ·æ¥çš„è¾¹æ•° 
+	int tot = 0;//å·²ç»è¿èµ·æ¥çš„è¾¹æƒ 
 	for (int i=0;i<M;i++) {
 		if (find(e[i].u) != find(e[i].v)) {
-			family[find(e[i].u)] = find(e[i].v);//°Ñe[i].uºÍe[i].vÁ¬ÆğÀ´ 
+			family[find(e[i].u)] = find(e[i].v);//æŠŠe[i].uå’Œe[i].vè¿èµ·æ¥ 
 			tot += e[i].w;
 			k++;
 		}
