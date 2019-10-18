@@ -21,6 +21,7 @@ for root,dirs,files in os.walk('.'):
 				print(file)
 				with open(filename, 'r') as f:
 					buf += f.read()
-				buf += '```\n'
+				buf += '\n```\n'
 with open('output.md','w') as f:
-	f.write(header + "\n" + toc + "\n" + buf)
+	#f.write(header + "\n" + toc + "\n" + buf)
+	f.write(header + "\n" + buf)
