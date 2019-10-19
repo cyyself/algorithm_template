@@ -1,4 +1,6 @@
 //http://poj.org/problem?id=3177
+//给一张无向图，问需要加多少条边，使得图没有桥
+//求边双，然后统计度数为1的节点个数，每次选两个点连起来，就是答案
 #include <cstdio>
 #include <cstring>
 #include <algorithm>
