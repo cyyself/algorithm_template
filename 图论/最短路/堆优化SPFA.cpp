@@ -41,7 +41,7 @@ int read() {
 	return ret * f;
 }
 int dis[100005];
-void dijkstra(int s) {
+void spfa(int s) {
 	memset(dis,0x3f,sizeof(dis));
 	dis[s] = 0;
 	priority_queue <p> q;
@@ -71,7 +71,7 @@ int main() {
 		scanf("%d%d%d",&u,&v,&w);
 		AddEdge(u,v,w);
 	}
-	dijkstra(s);
+	spfa(s);
 	for (int i=1;i<=n;i++) {
 		if (i != 1) printf(" ");
 		printf("%d",dis[i]);
