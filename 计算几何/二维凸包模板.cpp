@@ -1,25 +1,25 @@
 //HDU 1392
 #include <bits/stdc++.h>
 using namespace std;
-#define PII pair<int,int>
+#define PDD pair<double,double>
 #define y first
 #define x second
 int n;
-pair <int,int> p[105];
-class mystack : public stack<PII> {
+PDD p[105];
+class mystack : public stack<PDD> {
 public:
-	PII sec() {
-		PII tmp = top();
+	PDD sec() {
+		PDD tmp = top();
 		pop();
-		PII sec = top();
+		PDD sec = top();
 		push(tmp);
 		return sec;
 	}
 };
-inline bool judge(const PII &e,const PII &c,const PII &s) {
+inline bool judge(const PDD &e,const PDD &c,const PDD &s) {
 	return (e.x - s.x) * (c.y - s.y) - (c.x - s.x) * (e.y - s.y) >= 0;
 }
-void graham(vector <PII> &res) {
+void graham(vector <PDD> &res) {
 	sort(p,p+n);
 	mystack s;
 	for (int i=0;i<min(2,n);i++) s.push(p[i]);
@@ -42,14 +42,14 @@ void graham(vector <PII> &res) {
 		s.pop();
 	}
 }
-inline double dis(const PII &a,const PII &b) {
+inline double dis(const PDD &a,const PDD &b) {
 	return sqrt((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y));
 }
 int main() {
 	while (scanf("%d",&n) == 1) {
 		if (n == 0) break;
-		for (int i=0;i<n;i++) scanf("%d%d",&p[i].x,&p[i].y);
-		vector <PII> res; 
+		for (int i=0;i<n;i++) scanf("%lf%lf",&p[i].x,&p[i].y);
+		vector <PDD> res; 
 		graham(res);
 		double ans = 0;
 		if (res.size() > 2) {
