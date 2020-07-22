@@ -6,13 +6,14 @@ using namespace std;
 #define x second
 int n;
 PDD p[105];
-class mystack : public stack<PDD> {
+template <typename T>
+class mystack : public stack<T> {
 public:
-	PDD sec() {
-		PDD tmp = top();
-		pop();
-		PDD sec = top();
-		push(tmp);
+	T sec() {
+		T tmp = this->top();
+		this->pop();
+		T sec = this->top();
+		this->push(tmp);
 		return sec;
 	}
 };
@@ -21,7 +22,7 @@ inline bool judge(const PDD &e,const PDD &c,const PDD &s) {
 }
 void graham(vector <PDD> &res) {
 	sort(p,p+n);
-	mystack s;
+	mystack <PDD> s;
 	for (int i=0;i<min(2,n);i++) s.push(p[i]);
 	if (n > 2) {
 		for (int i=2;i<n;i++) {
