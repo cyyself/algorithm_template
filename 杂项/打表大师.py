@@ -3,6 +3,7 @@
 #Usage：
 #1. 将打表的答案每行一个十进制数字输出到文件，例如文件名为1.txt
 #2. 执行该文件，比如文件名为comp.py，执行python3 comp.py < 1.txt > biao.py
+#为了更好压缩效果，可尝试将gzip改为bz2
 import base64
 import gzip
 a = bytearray()
