@@ -17,7 +17,7 @@ namespace fft {
 		}
 		for (int l=2;l<=n;l*=2) {
 			int m = l / 2;
-			for (auto *p=a;p != a + n;p += l) {
+			for (auto *p=a;p < a + n;p += l) {
 				for (int i=0;i<m;i++) {
 					complex<double> t = (inv?conj(omega[n/l*i]):omega[n/l*i]) * p[m+i];
 					p[m+i] = p[i] - t;
@@ -34,21 +34,22 @@ namespace fft {
 		for (int i=0;i<n;i++) a[i] /= n;
 	}
 }
-struct poly {
-	vector <int> vec;
+struct poly: public vector <int> {
 	friend poly operator * (const poly &a,const poly &b) {
 		int n = 1;
-		while (n < a.vec.size() + b.vec.size()) n <<= 1;
+		while (n < a.size() + b.size()) n <<= 1;
 		static complex <double> c1[maxn],c2[maxn];
-		for (int i=0;i<a.vec.size();i++) c1[i].real(a.vec[i]);
-		for (int i=0;i<b.vec.size();i++) c2[i].real(b.vec[i]);
+		for (int i=0;i<a.size();i++) c1[i] = complex<double>(a[i],0);
+		for (int i=a.size();i<n;i++) c1[i] = complex<double>(0,0);
+		for (int i=0;i<b.size();i++) c2[i] = complex<double>(b[i],0);
+		for (int i=b.size();i<n;i++) c2[i] = complex<double>(0,0);
 		fft::init(n);
 		fft::dft(c1,n);
 		fft::dft(c2,n);
 		for (int i=0;i<n;i++) c1[i] *= c2[i];
 		fft::idft(c1,n);
 		poly res;
-		for (int i=0;i<a.vec.size()+b.vec.size()-1;i++) res.vec.push_back((int)floor(c1[i].real()+0.5));
+		for (int i=0;i<a.size()+b.size()-1;i++) res.push_back((int)floor(c1[i].real()+0.5));
 		return res;
 	}
 };
