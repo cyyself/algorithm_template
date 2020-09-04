@@ -1,11 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int maxn = 1e5+5;
-struct Treap {//无旋Treap
+struct Treap {//无旋Treap，注：按照权值和按照大小不能同时使用
 	int sz[maxn];
 	int rd[maxn];
 	int val[maxn];
 	int son[maxn][2];
+	bool rev[maxn];
 	int rt,nodecnt;
 	void init() {
 		for (int i=1;i<nodecnt;i++) {
@@ -16,6 +17,14 @@ struct Treap {//无旋Treap
 	}
 	void push_up(int node) {
 		sz[node] = sz[son[node][0]] + sz[son[node][1]] + 1;
+	}
+	void push_down(int node) {
+		if (rev[node]) {
+			swap(son[node][0],son[node][1]);
+			rev[son[node][0]] ^= 1;
+			rev[son[node][1]] ^= 1;
+			rev[node] = 0;
+		}
 	}
 	void split_val(int node,int x,int &l,int &r) {
 		if (!node) l = r = 0;
@@ -31,14 +40,31 @@ struct Treap {//无旋Treap
 			push_up(node);
 		}
 	}
+	void split_sz(int node,int x,int &l,int &r) {
+		if (!node) l = r = 0;
+		else {
+			push_down(node);
+			if (sz[son[node][0]] + 1 <= x) {
+				l = node;
+				split_sz(son[node][1],x-(sz[son[node][0]] + 1),son[node][1],r);
+			}
+			else {
+				r = node;
+				split_sz(son[node][0],x,l,son[node][0]);
+			}
+			push_up(node);
+		}
+	}
 	int merge(int x,int y) {//保证x<y
 		if (!x || !y) return x + y;
 		if (rd[x] < rd[y]) {
+			push_down(x);
 			son[x][1] = merge(son[x][1],y);
 			push_up(x);
 			return x;
 		}
 		else {
+			push_down(y);
 			son[y][0] = merge(x,son[y][0]);
 			push_up(y);
 			return y;
@@ -50,6 +76,7 @@ struct Treap {//无旋Treap
 		rd[nodecnt] = rand();
 		val[nodecnt] = x;
 		sz[nodecnt] = 1;
+		rev[nodecnt] = 0;
 		rt = merge(l,merge(nodecnt,r));
 		nodecnt ++;
 	}
@@ -94,35 +121,36 @@ struct Treap {//无旋Treap
 		rt = merge(l,r);
 		return val_by_rank(szl);
 	}
+	void out(int node,vector<int> &buf) {
+		if (!node) return;
+		push_down(node);
+		out(son[node][0],buf);
+		buf.push_back(val[node]);
+		out(son[node][1],buf);
+	}
+	void out(vector <int> &buf) {
+		out(rt,buf);
+	}
+	void reverse(int l,int r) {
+		int t1,t2,t3;
+		split_sz(rt,l-1,t1,t2);
+		split_sz(t2,r-l+1,t2,t3);
+		rev[t2] ^= 1;
+		rt = merge(t1,merge(t2,t3));
+	}
 }tr;
-
 int main() {
 	tr.init();
-	int q;
-	scanf("%d",&q);
-	while (q --) {
-		int op,x;
-		scanf("%d%d",&op,&x);
-		switch (op) {
-			case 1:
-				tr.insert(x);
-				break;
-			case 2:
-				tr.del(x);
-				break;
-			case 3:
-				printf("%d\n",tr.rank_by_val(x));
-				break;
-			case 4:
-				printf("%d\n",tr.val_by_rank(x));
-				break;
-			case 5:
-				printf("%d\n",tr.pre(x));
-				break;
-			case 6:
-				printf("%d\n",tr.suf(x));
-				break;
-		}
+	int n,m;
+	scanf("%d%d",&n,&m);
+	for (int i=1;i<=n;i++) tr.insert(i);
+	while (m --) {
+		int l,r;
+		scanf("%d%d",&l,&r);
+		tr.reverse(l,r);
 	}
+	vector <int> ans;
+	tr.out(ans);
+	for (int i=0;i<ans.size();i++) printf("%d%c",ans[i],i==ans.size()-1?'\n':' ');
 	return 0;
 }
