@@ -19,6 +19,11 @@ namespace Geometry {
 			x = _x;
 			y = _y;
 		}
+		Point spin(double ddeg) {
+			double deg = atan2(y,x);
+			double r = sqrt(x * x + y * y);
+			return Point(r * cos(deg+ddeg),r * sin(deg+ddeg));
+		}
 		friend Point operator + (const Point &a,const Point &b) {
 			return Point(a.x+b.x,a.y+b.y);
 		}
@@ -72,6 +77,16 @@ namespace Geometry {
 			return res;
 		}
 	};
+	Point proj(Point a,Point b,Point p) {//点p在直线ab的投影
+		Point d = b - a;
+		Point r = p - a;
+		return a + d * ((r * d)/(d * d));
+	}
+	double dis(Point a,Point b) {
+		double dx = b.x - a.x;
+		double dy = b.y - a.y;
+		return sqrt(dx * dx + dy * dy);
+	}
 	Point inter(Line a,Line b) {
 		Point c = b.u - a.u;
 		return b.u + ((c^a.d) / (a.d^b.d)) * b.d;
