@@ -3,11 +3,13 @@ header = "# CYY's Algorithm Template"
 toc = ""
 buf = ""
 import os
-suffix = ['cpp']
+suffix = ['cpp','py','h','txt']
 curpath = ''
 for root,dirs,files in os.walk('.'):
 	for file in files:
 		if '/.' in root:
+			continue
+		if file == 'genmd.py':
 			continue
 		if curpath != root:
 			buf += '\n# ' + root + "\n"
